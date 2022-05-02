@@ -8,7 +8,6 @@ class EmacsMac < Formula
 
   head "https://bitbucket.org/mituharu/emacs-mac.git", branch: "work"
 
-  option "with-dbus", "Build with d-bus support"
   option "without-modules", "Build without dynamic modules support"
   option "with-rsvg", "Build with rsvg support"
   option "with-starter", "Build with a starter script to start emacs GUI from CLI"
@@ -23,7 +22,6 @@ class EmacsMac < Formula
 
   depends_on "autoconf"
   depends_on "automake"
-  depends_on "d-bus" if build.with? "dbus"
   depends_on "gnutls"
   depends_on "librsvg" if build.with? "rsvg"
   depends_on "pkg-config"
