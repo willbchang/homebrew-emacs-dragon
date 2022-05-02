@@ -32,10 +32,18 @@ class EmacsMac < Formula
   depends_on "libvterm"
   depends_on cask: "font-roboto-mono"
 
+  # Natural Title Bar
   patch do
     url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/patches/emacs-mac-title-bar-9.0.patch"
     sha256 "4c719da92bf7744bb7931315ddcca78b190d7513adf49f86e7c2ae93dacfc68b"
   end
+
+  # Suppress Messages
+  patch do
+    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/patches/suppress-message.patch"
+    sha256 "c1077cc2bf5bd46414f8bc53c284f9105f1afd574a8b96d7f24218d09d814075"
+  end
+
 
   if build.with? "native-comp"
     depends_on "libgccjit" => :recommended
@@ -46,7 +54,7 @@ class EmacsMac < Formula
   # https://bitbucket.org/mituharu/emacs-mac/pull-requests/2/add-multi-tty-support-to-be-on-par-with/diff
   # https://ylluminarious.github.io/2019/05/23/how-to-fix-the-emacs-mac-port-for-multi-tty-access/
   patch do
-    url "https://raw.githubusercontent.com/railwaycat/homebrew-emacsmacport/667f0efc08506facfc6963ac1fd1d5b9b777e094/patches/multi-tty-27.diff"
+    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/patches/multi-tty-27.diff"
     sha256 "5a13e83e79ce9c4a970ff0273e9a3a07403cc07f7333a0022b91c191200155a1"
   end
 
