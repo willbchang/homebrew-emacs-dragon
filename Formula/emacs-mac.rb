@@ -8,7 +8,6 @@ class EmacsMac < Formula
 
   head "https://bitbucket.org/mituharu/emacs-mac.git", branch: "work"
 
-  option "with-mac-metal", "use Metal framework in application-side double buffering (experimental)"
   option "with-native-comp", "Build with native compilation"
 
   # Emacs Dragon Icon
@@ -62,7 +61,6 @@ class EmacsMac < Formula
     ]
     args << "--with-modules"
     args << "--with-rsvg"
-    args << "--with-mac-metal" if build.with? "mac-metal"
     args << "--with-native-compilation" if build.with? "native-comp"
 
     if build.with? "native-comp"
