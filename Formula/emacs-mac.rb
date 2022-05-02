@@ -12,15 +12,13 @@ class EmacsMac < Formula
   option "without-modules", "Build without dynamic modules support"
   option "with-rsvg", "Build with rsvg support"
   option "with-ctags", "Don't remove the ctags executable that emacs provides"
-  option "with-natural-title-bar",
-         "Build with a patch for title bar color inferred by theme (not recommended to use with --HEAD option)"
   option "with-starter", "Build with a starter script to start emacs GUI from CLI"
   option "with-mac-metal", "use Metal framework in application-side double buffering (experimental)"
   option "with-native-comp", "Build with native compilation"
 
   # Emacs Dragon Icon
   resource do
-    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/master/icons/emacs-dragon-icon.icns"
+    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/icons/emacs-dragon-icon.icns"
     sha256 "a0a624e6a08971f2f9220d2a3aaa79e1f8aecc85df8a522ebb40310c54699c40"
   end
 
@@ -41,11 +39,9 @@ class EmacsMac < Formula
   depends_on "libvterm"
   depends_on cask: "font-roboto-mono"
 
-  if build.with? "natural-title-bar"
-    patch do
-      url "https://raw.githubusercontent.com/railwaycat/homebrew-emacsmacport/master/patches/emacs-mac-title-bar-9.0.patch"
-      sha256 "4c719da92bf7744bb7931315ddcca78b190d7513adf49f86e7c2ae93dacfc68b"
-    end
+  patch do
+    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/patches/emacs-mac-title-bar-9.0.patch"
+    sha256 "4c719da92bf7744bb7931315ddcca78b190d7513adf49f86e7c2ae93dacfc68b"
   end
 
   if build.with? "native-comp"
