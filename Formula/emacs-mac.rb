@@ -8,7 +8,6 @@ class EmacsMac < Formula
 
   head "https://bitbucket.org/mituharu/emacs-mac.git", branch: "work"
 
-  option "with-rsvg", "Build with rsvg support"
   option "with-starter", "Build with a starter script to start emacs GUI from CLI"
   option "with-mac-metal", "use Metal framework in application-side double buffering (experimental)"
   option "with-native-comp", "Build with native compilation"
@@ -22,7 +21,7 @@ class EmacsMac < Formula
   depends_on "autoconf"
   depends_on "automake"
   depends_on "gnutls"
-  depends_on "librsvg" if build.with? "rsvg"
+  depends_on "librsvg"
   depends_on "pkg-config"
   depends_on "texinfo"
   depends_on "jansson" => :recommended
@@ -63,7 +62,7 @@ class EmacsMac < Formula
       "--with-gnutls",
     ]
     args << "--with-modules"
-    args << "--with-rsvg" if build.with? "rsvg"
+    args << "--with-rsvg"
     args << "--with-mac-metal" if build.with? "mac-metal"
     args << "--with-native-compilation" if build.with? "native-comp"
 
