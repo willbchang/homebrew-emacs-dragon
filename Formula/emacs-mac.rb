@@ -12,8 +12,6 @@ class EmacsMac < Formula
   option "without-modules", "Build without dynamic modules support"
   option "with-rsvg", "Build with rsvg support"
   option "with-ctags", "Don't remove the ctags executable that emacs provides"
-  option "with-no-title-bars",
-         "Build with a patch for no title bars on frames (not recommended to use with --HEAD option)"
   option "with-natural-title-bar",
          "Build with a patch for title bar color inferred by theme (not recommended to use with --HEAD option)"
   option "with-starter", "Build with a starter script to start emacs GUI from CLI"
@@ -42,14 +40,6 @@ class EmacsMac < Formula
   depends_on "cmake"
   depends_on "libvterm"
   depends_on cask: "font-roboto-mono"
-
-  if build.with? "no-title-bars"
-    # odie "--with-no-title-bars patch not supported on --HEAD" if build.head?
-    patch do
-      url "https://raw.githubusercontent.com/railwaycat/homebrew-emacsmacport/667f0efc08506facfc6963ac1fd1d5b9b777e094/patches/emacs-26.2-rc1-mac-7.5-no-title-bar.patch"
-      sha256 "8319fd9568037c170f5990f608fb5bd82cd27346d1d605a83ac47d5a82da6066"
-    end
-  end
 
   if build.with? "natural-title-bar"
     patch do
