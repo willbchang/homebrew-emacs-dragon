@@ -8,7 +8,6 @@ class EmacsMac < Formula
 
   head "https://bitbucket.org/mituharu/emacs-mac.git", branch: "work"
 
-  option "with-starter", "Build with a starter script to start emacs GUI from CLI"
   option "with-mac-metal", "use Metal framework in application-side double buffering (experimental)"
   option "with-native-comp", "Build with native compilation"
 
@@ -91,16 +90,14 @@ class EmacsMac < Formula
     system "make", "install"
     prefix.install "NEWS-mac"
 
-    if build.with? "starter"
-      # Replace the symlink with one that starts GUI
-      # alignment the behavior with cask
-      # borrow the idea from emacs-plus
-      (bin/"emacs").unlink
-      (bin/"emacs").write <<~EOS
-        #!/bin/bash
-        exec #{prefix}/Emacs.app/Contents/MacOS/Emacs.sh "$@"
-      EOS
-    end
+    # Replace the symlink with one that starts GUI
+    # alignment the behavior with cask
+    # borrow the idea from emacs-plus
+    (bin/"emacs").unlink
+    (bin/"emacs").write <<~EOS
+      #!/bin/bash
+      exec #{prefix}/Emacs.app/Contents/MacOS/Emacs.sh "$@"
+    EOS
   end
 
   def post_install
