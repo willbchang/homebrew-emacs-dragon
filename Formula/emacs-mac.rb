@@ -11,7 +11,6 @@ class EmacsMac < Formula
   option "with-dbus", "Build with d-bus support"
   option "without-modules", "Build without dynamic modules support"
   option "with-rsvg", "Build with rsvg support"
-  option "with-ctags", "Don't remove the ctags executable that emacs provides"
   option "with-starter", "Build with a starter script to start emacs GUI from CLI"
   option "with-mac-metal", "use Metal framework in application-side double buffering (experimental)"
   option "with-native-comp", "Build with native compilation"
@@ -95,13 +94,6 @@ class EmacsMac < Formula
     system "make"
     system "make", "install"
     prefix.install "NEWS-mac"
-
-    # Follow Homebrew and don't install ctags from Emacs. This allows Vim
-    # and Emacs and exuberant ctags to play together without violence.
-    if build.without? "ctags"
-      (bin/"ctags").unlink
-      (share/man/man1/"ctags.1.gz").unlink
-    end
 
     if build.with? "starter"
       # Replace the symlink with one that starts GUI
