@@ -26,10 +26,6 @@ class EmacsMac < Formula
     sha256 "a0a624e6a08971f2f9220d2a3aaa79e1f8aecc85df8a522ebb40310c54699c40"
   end
 
-  deprecated_option "keep-ctags" => "with-ctags"
-  deprecated_option "icon-official" => "with-official-icon"
-  deprecated_option "icon-modern" => "with-modern-icon"
-
   depends_on "autoconf"
   depends_on "automake"
   depends_on "d-bus" if build.with? "dbus"
