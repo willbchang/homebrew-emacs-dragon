@@ -1,5 +1,5 @@
 # coding: utf-8
-class EmacsMac < Formula
+class EmacsDragon < Formula
   desc "YAMAMOTO Mitsuharu's Mac port of GNU Emacs"
   homepage "https://www.gnu.org/software/emacs/"
   url "https://bitbucket.org/mituharu/emacs-mac/get/emacs-28.1-mac-9.0.tar.gz"
