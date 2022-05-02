@@ -44,6 +44,17 @@ class EmacsMac < Formula
     sha256 "c1077cc2bf5bd46414f8bc53c284f9105f1afd574a8b96d7f24218d09d814075"
   end
 
+  # Mac Native keybindings
+  patch do
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/mac-native-keybindings.patch"
+    sha256 "9450655f713c8b88e83a8b31a78b506cc3e814bfcad2cb0dea17a514363da222"
+  end
+  
+  # Better Default UI
+
+
+  # Better Default UX
+
 
   if build.with? "native-comp"
     depends_on "libgccjit" => :recommended
