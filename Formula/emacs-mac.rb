@@ -8,7 +8,6 @@ class EmacsMac < Formula
 
   head "https://bitbucket.org/mituharu/emacs-mac.git", branch: "work"
 
-  option "without-modules", "Build without dynamic modules support"
   option "with-rsvg", "Build with rsvg support"
   option "with-starter", "Build with a starter script to start emacs GUI from CLI"
   option "with-mac-metal", "use Metal framework in application-side double buffering (experimental)"
@@ -63,7 +62,7 @@ class EmacsMac < Formula
       "--enable-mac-app=#{prefix}",
       "--with-gnutls",
     ]
-    args << "--with-modules" unless build.without? "modules"
+    args << "--with-modules"
     args << "--with-rsvg" if build.with? "rsvg"
     args << "--with-mac-metal" if build.with? "mac-metal"
     args << "--with-native-compilation" if build.with? "native-comp"
