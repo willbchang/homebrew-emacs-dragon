@@ -37,6 +37,11 @@ class EmacsMac < Formula
   depends_on "libxml2" => :recommended
   depends_on "glib" => :optional
   depends_on "imagemagick" => :optional
+  depends_on "rg"
+  depends_on "fd"
+  depends_on "cmake"
+  depends_on "libvterm"
+  depends_on cask: "font-roboto-mono"
 
   if build.with? "no-title-bars"
     # odie "--with-no-title-bars patch not supported on --HEAD" if build.head?
