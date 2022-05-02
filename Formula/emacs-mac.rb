@@ -85,13 +85,9 @@ class EmacsMac < Formula
     end
 
     icons_dir = buildpath/"mac/Emacs.app/Contents/Resources"
-    ICONS_INFO.each do |icon,|
-      next unless build.with? icon
-
-      rm "#{icons_dir}/Emacs.icns"
-      resource(icon).stage do
-        icons_dir.install Dir["*.icns*"].first => "Emacs.icns"
-      end
+    rm "#{icons_dir}/Emacs.icns"
+    resource("emacs-dragon-icon").stage do
+      icons_dir.install Dir["*.icns*"].first => "Emacs.icns"
     end
 
     system "./autogen.sh"
