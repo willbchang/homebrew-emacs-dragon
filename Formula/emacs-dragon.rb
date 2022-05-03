@@ -8,11 +8,10 @@ class EmacsDragon < Formula
 
   head "https://bitbucket.org/mituharu/emacs-mac.git", branch: "work"
 
-  option "with-native-comp", "Build with native compilation"
+  option "with-native-comp", "Build with native compilation (only with --HEAD, experimental, check issue \#274 before installation)"
 
-  # Emacs Dragon Icon
-  resource do
-    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/icons/emacs-dragon-icon.icns"
+  resource "emacs-dragon-icon" do
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/icons/emacs-dragon-icon.icns"
     sha256 "a0a624e6a08971f2f9220d2a3aaa79e1f8aecc85df8a522ebb40310c54699c40"
   end
 
@@ -30,17 +29,24 @@ class EmacsDragon < Formula
   depends_on "fd"
   depends_on "cmake"
   depends_on "libvterm"
-  depends_on cask: "font-roboto-mono"
+  # depends_on cask: "font-roboto-mono"
 
-  # Natural Title Bar
   patch do
-    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/patches/emacs-mac-title-bar-9.0.patch"
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/emacs-mac-title-bar-9.0.patch"
     sha256 "4c719da92bf7744bb7931315ddcca78b190d7513adf49f86e7c2ae93dacfc68b"
+  end
+
+  # patch for multi-tty support, see the following links for details
+  # https://bitbucket.org/mituharu/emacs-mac/pull-requests/2/add-multi-tty-support-to-be-on-par-with/diff
+  # https://ylluminarious.github.io/2019/05/23/how-to-fix-the-emacs-mac-port-for-multi-tty-access/
+  patch do
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/multi-tty-27.diff"
+    sha256 "2a5121169a2442ea93611994a448a0035ccfaf1344e7ee1ff3cd94d914747625"
   end
 
   # Suppress Messages
   patch do
-    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/patches/suppress-message.patch"
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/suppress-message.patch"
     sha256 "c1077cc2bf5bd46414f8bc53c284f9105f1afd574a8b96d7f24218d09d814075"
   end
 
@@ -49,24 +55,26 @@ class EmacsDragon < Formula
     url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/mac-native-keybindings.patch"
     sha256 "9450655f713c8b88e83a8b31a78b506cc3e814bfcad2cb0dea17a514363da222"
   end
-  
+
   # Better Default UI
+#   patch do
+#     url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/better-default-UI.patch"
+#     sha256 "42305745d7ca1dd2a41af67ae36875f9455e10f3102d56656a84549f11bd31f7"
+#   end
 
+#   stable do
+#     patch do
+#       url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/mac-arm-fix.diff"
+#       sha256 "9b58a61931e79863caa5c310a7ec290cc7b84c78aa0086d0ba7192756c370db8"
+#     end
+#   end
 
-  # Better Default UX
-
-
-  if build.with? "native-comp"
-    depends_on "libgccjit" => :recommended
-    depends_on "gcc" => :build
-  end
-
-  # patch for multi-tty support, see the following links for details
-  # https://bitbucket.org/mituharu/emacs-mac/pull-requests/2/add-multi-tty-support-to-be-on-par-with/diff
-  # https://ylluminarious.github.io/2019/05/23/how-to-fix-the-emacs-mac-port-for-multi-tty-access/
-  patch do
-    url "https://raw.githubusercontent.com/willbchang/brew-emacs-dragon/main/patches/multi-tty-27.diff"
-    sha256 "5a13e83e79ce9c4a970ff0273e9a3a07403cc07f7333a0022b91c191200155a1"
+  head do
+    if build.with? "native-comp"
+      opoo "native-comp option only works with --HEAD, check issue \#274 before installation"
+      depends_on "libgccjit" => :recommended
+      depends_on "gcc" => :build
+    end
   end
 
   def install
@@ -78,8 +86,9 @@ class EmacsDragon < Formula
       "--enable-mac-app=#{prefix}",
       "--with-gnutls",
     ]
-    args << "--with-modules"
-    args << "--with-rsvg"
+    args << "--with-modules" unless build.without? "modules"
+    args << "--with-rsvg" if build.with? "rsvg"
+    args << "--with-mac-metal" if build.with? "mac-metal"
     args << "--with-native-compilation" if build.with? "native-comp"
 
     if build.with? "native-comp"
@@ -96,7 +105,6 @@ class EmacsDragon < Formula
     end
 
     icons_dir = buildpath/"mac/Emacs.app/Contents/Resources"
-    rm "#{icons_dir}/Emacs.icns"
     resource("emacs-dragon-icon").stage do
       icons_dir.install Dir["*.icns*"].first => "Emacs.icns"
     end
@@ -106,6 +114,13 @@ class EmacsDragon < Formula
     system "make"
     system "make", "install"
     prefix.install "NEWS-mac"
+
+    # Follow Homebrew and don't install ctags from Emacs. This allows Vim
+    # and Emacs and exuberant ctags to play together without violence.
+    if build.without? "ctags"
+      (bin/"ctags").unlink
+      (share/man/man1/"ctags.1.gz").unlink
+    end
 
     # Replace the symlink with one that starts GUI
     # alignment the behavior with cask
@@ -118,25 +133,26 @@ class EmacsDragon < Formula
   end
 
   def post_install
-    if build.with? "native-comp"
+    if build.head? and build.with? "native-comp"
       ln_sf "#{Dir[opt_prefix/"lib/emacs/*"].first}/native-lisp", "#{opt_prefix}/Emacs.app/Contents/native-lisp"
     end
   end
 
   def caveats
+    `osascript -e 'tell application "Finder" to make alias file to POSIX file "#{prefix}/Emacs.app" at POSIX file "/Applications"'`
     <<~EOS
       This is YAMAMOTO Mitsuharu's "Mac port" addition to
-      GNU Emacs 28. This provides a native GUI support for Mac OS X
-      10.10 - 12. After installing, see README-mac and NEWS-mac
+      GNU Emacs 27. This provides a native GUI support for Mac OS X
+      10.6 - 12. After installing, see README-mac and NEWS-mac
       in #{prefix} for the port details.
 
       Emacs.app was installed to:
         #{prefix}
 
       To link the application to default Homebrew App location:
-        osascript -e 'tell application "Finder" to make alias file to POSIX file "#{prefix}/Emacs.app" at POSIX file "/Applications"'
-      You can use ln -s, but symlinks created this way don't show up in Spotlight:
         ln -s #{prefix}/Emacs.app /Applications
+      Other ways please refer:
+        https://github.com/willbchang/homebrew-emacsmacport/wiki/Alternative-way-of-place-Emacs.app-to-Applications-directory
 
       If you are using Doom Emacs, be sure to run doom sync:
         ~/.emacs.d/bin/doom sync

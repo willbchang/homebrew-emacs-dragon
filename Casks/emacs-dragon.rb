@@ -1,4 +1,4 @@
-cask 'emacs-mac' do
+cask 'emacs-dragon' do
   version 'emacs-28.1-mac-9.0'
 
   if Hardware::CPU.intel?
@@ -25,14 +25,14 @@ cask 'emacs-mac' do
     end
   end
 
-  appcast 'https://github.com/railwaycat/homebrew-emacsmacport/releases.atom'
-  name 'Emacs-mac'
+  appcast 'https://github.com/willbchang/homebrew-emacs-dragon/releases.atom'
+  name 'Emacs-dragon'
   homepage 'https://bitbucket.org/mituharu/emacs-mac.git'
   desc "YAMAMOTO Mitsuharu's Mac port of GNU Emacs"
 
   conflicts_with cask: [
                         'emacs',
-                        'emacs-mac-spacemacs-icon',
+                        'emacs-mac',
                        ]
 
   app 'Emacs.app'

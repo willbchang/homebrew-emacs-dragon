@@ -1,3 +1,4 @@
+# On Building...
 # Brew Emas Dragon
 - The primiary goal is to make **Emacs easier and beautifier** for macOS users.
 - This project based on [railwaycat/homebrew-emacsmacport](https://github.com/railwaycat/homebrew-emacsmacport) which uses [emacs-mac](https://bitbucket.org/mituharu/emacs-mac/overview).
@@ -13,13 +14,13 @@
 
 ## Install
 ```sh
-brew tap willbchang/brew-emacs-dragon
+brew tap willbchang/homebrew-emacs-dragon
 brew install emacs-dragon
 ```
 
 To disable this tap:
 ```sh
-brew untap willbchang/brew-emacs-dragon
+brew untap willbchang/homebrew-emacs-dragon
 ```
 
 ## License
