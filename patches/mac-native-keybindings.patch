@@ -1,0 +1,169 @@
+diff --git a/lisp/term/mac-win.el b/lisp/term/mac-win.el
+index 20b03f3..5e89cc4 100644
+--- a/lisp/term/mac-win.el
++++ b/lisp/term/mac-win.el
+@@ -3219,6 +3219,164 @@ system symbol names."
+ 	     (and value (cdr value))))
+ 	 mac-system-symbol-cache))))
+ 
++;; Here are some Nextstep-like bindings for command key sequences.
++
++;; Set modifiers correctly
++(setq mac-command-modifier 'super
++      mac-option-modifier 'meta)
++
++;; Frame
++(global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
++(global-set-key (kbd "S-n") 'new-empty-frame)
++(global-set-key (kbd "s-W") 'delete-frame)
++(global-set-key (kbd "s-`") 'other-frame)
++(global-set-key (kbd "M-`") 'other-window)
++(global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
++
++;; Buffer
++(global-set-key (kbd "s-w") 'kill-this-buffer)
++(global-set-key (kbd "s-[") 'previous-buffer)
++(global-set-key (kbd "s-]") 'next-buffer)
++(global-set-key (kbd "s-s") 'save-buffer)
++(global-set-key (kbd "s-n") 'new-empty-buffer)
++(global-set-key (kbd "s-p") 'project-find-file)
++(global-set-key (kbd "s-,") 'open-config-file)
++(global-set-key (kbd "s-.") 'reload-init-file)
++;; (global-set-key (kbd "s-r") 'revert-buffer-no-confirm)
++
++
++;; Disable swipe left/right to change buffer.
++(global-unset-key [swipe-left])
++(global-unset-key [swipe-right])
++
++;; Moving Cursor
++(global-set-key (kbd "s-<up>") 'beginning-of-buffer)
++(global-set-key (kbd "s-<down>") 'end-of-buffer)
++(global-set-key (kbd "s-<left>") 'smarter-move-beginning-of-line)
++(global-set-key (kbd "s-<right>") 'move-end-of-line)
++(global-set-key (kbd "M-S-<up>") 'move-line-up)
++(global-set-key (kbd "M-S-<down>") 'move-line-down)
++
++;; Selecting Text
++(global-set-key (kbd "s-a") 'mark-whole-buffer)
++
++;; Searching & Replacing Text
++(global-set-key (kbd "s-f") 'isearch-forward)
++(global-set-key (kbd "s-r") 'query-replace)
++
++;; Editing Text
++(global-set-key (kbd "s-c") 'kill-ring-save)
++(global-set-key (kbd "s-x") 'kill-region)
++(global-set-key (kbd "s-v") 'yank)
++(global-set-key (kbd "s-z") 'undo)
++(global-set-key (kbd "s-<return>") 'newline)
++(global-set-key (kbd "s-<backspace>") 'backward-kill-line)
++(global-set-key (kbd "s-S-<backspace>") 'kill-whole-line)
++
++;; Text Scale
++(global-set-key (kbd "s-+") 'text-scale-adjust)
++(global-set-key (kbd "s-=") 'text-scale-adjust)
++(global-set-key (kbd "s--") 'text-scale-adjust)
++(global-set-key (kbd "s-0") 'text-scale-adjust)
++
++;; Translation ESC keybinding
++;; Cancel partially typed or accidental command.
++(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
++
++;; Translation Chinese Keybindings
++(define-key key-translation-map (kbd "s-【") (kbd "s-["))
++(define-key key-translation-map (kbd "s-】") (kbd "s-]"))
++(define-key key-translation-map (kbd "s-，") (kbd "s-,"))
++(define-key key-translation-map (kbd "s-。") (kbd "s-."))
++(define-key key-translation-map (kbd "C-·") (kbd "C-`"))
++;; FIX: Key sequence M-· starts with non-prefix key ESC
++;; (define-key key-translation-map (kbd "M-·") (kbd "M-`"))
++
++;; Cusmotized Keybindings' Functions
++(defun new-empty-frame ()
++  "Create a new frame with a new empty buffer."
++  (interactive)
++  (let ((buffer (generate-new-buffer "untitled")))
++    (set-buffer buffer)
++    (funcall initial-major-mode)
++    (display-buffer buffer '(display-buffer-pop-up-frame . nil))))
++
++
++;; http://ergoemacs.org/emacs/emacs_new_empty_buffer.html
++(defun new-empty-buffer ()
++  "Create a new empty buffer.
++New buffer will be named “untitled” or “untitled<2>”, “untitled<3>”, etc."
++  (interactive)
++  (let (($buffer (generate-new-buffer "untitled")))
++    (switch-to-buffer $buffer)
++    (funcall initial-major-mode)
++    (setq buffer-offer-save t)
++    $buffer))
++
++(defun revert-buffer-no-confirm ()
++  "Revert buffer without confirmation."
++  (interactive)
++  (save-buffer t)
++  (revert-buffer t t)
++  (message "Reverted `%s'" (buffer-name)))
++
++
++;; TODO: if no config.org open init.el or customize instead.
++(defun open-config-file ()
++  (interactive)
++  (find-file "~/.config/emacs/config.org"))
++
++(defun reload-init-file ()
++  (interactive)
++  (load-file user-init-file))
++
++(defun reveal-in-finder ()
++  "Open current file in Finder."
++  (interactive)
++  (shell-command "open -R ."))
++
++;; https://stackoverflow.com/a/2425753/9984029
++(defun move-line-up ()
++  (interactive)
++  (transpose-lines 1)
++  (previous-line 2))
++
++(defun move-line-down ()
++  (interactive)
++  (next-line 1)
++  (transpose-lines 1)
++  (previous-line 1))
++
++(defun backward-kill-line (arg)
++  "Kill ARG lines backward."
++  (interactive "p")
++  (kill-line (- 1 arg)))
++
++;; https://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line
++(defun smarter-move-beginning-of-line (arg)
++  "Move point back to indentation of beginning of line.
++
++Move point to the first non-whitespace character on this line.
++If point is already there, move to the beginning of the line.
++Effectively toggle between the first non-whitespace character and
++the beginning of the line.
++
++If ARG is not nil or 1, move forward ARG - 1 lines first.  If
++point reaches the beginning or end of the buffer, stop there."
++  (interactive "^p")
++  (setq arg (or arg 1))
++
++  ;; Move lines first
++  (when (/= arg 1)
++    (let ((line-move-visual nil))
++      (forward-line (1- arg))))
++
++  (let ((orig-point (point)))
++    (back-to-indentation)
++    (when (= orig-point (point))
++      (move-beginning-of-line 1))))
++
++
+ (provide 'mac-win)
+ (provide 'term/mac-win)
+ 
