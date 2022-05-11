@@ -11,7 +11,7 @@ class EmacsDragon < Formula
   option "with-native-comp", "Build with native compilation (only with --HEAD, experimental, check issue \#274 before installation)"
 
   resource "emacs-dragon-icon" do
-    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/icons/emacs-dragon-icon.icns"
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/icons/emacs-dragon-icon.icns"
     sha256 "a0a624e6a08971f2f9220d2a3aaa79e1f8aecc85df8a522ebb40310c54699c40"
   end
 
@@ -30,9 +30,10 @@ class EmacsDragon < Formula
   depends_on "cmake"
   depends_on "libvterm"
   # depends_on cask: "font-roboto-mono"
+  # system_profiler SPFontsDataType | grep 'RobotoMono.*\.ttf'
 
   patch do
-    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/emacs-mac-title-bar-9.0.patch"
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/emacs-mac-title-bar-9.0.patch"
     sha256 "4c719da92bf7744bb7931315ddcca78b190d7513adf49f86e7c2ae93dacfc68b"
   end
 
@@ -40,31 +41,31 @@ class EmacsDragon < Formula
   # https://bitbucket.org/mituharu/emacs-mac/pull-requests/2/add-multi-tty-support-to-be-on-par-with/diff
   # https://ylluminarious.github.io/2019/05/23/how-to-fix-the-emacs-mac-port-for-multi-tty-access/
   patch do
-    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/multi-tty-27.diff"
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/multi-tty-27.diff"
     sha256 "2a5121169a2442ea93611994a448a0035ccfaf1344e7ee1ff3cd94d914747625"
   end
 
   # Suppress Messages
   patch do
-    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/suppress-message.patch"
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/suppress-message.patch"
     sha256 "c1077cc2bf5bd46414f8bc53c284f9105f1afd574a8b96d7f24218d09d814075"
   end
 
   # Mac Native keybindings
   patch do
-    url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/mac-native-keybindings.patch"
-    sha256 "9450655f713c8b88e83a8b31a78b506cc3e814bfcad2cb0dea17a514363da222"
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/mac-native-keybindings.patch"
+    sha256 "0f51c32d7ec084133287b653eceb2113845d2d87ecb65bc3e3cddf34b1df5416"
   end
 
   # Better Default UI
 #   patch do
-#     url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/better-default-UI.patch"
+#     url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/better-default-UI.patch"
 #     sha256 "42305745d7ca1dd2a41af67ae36875f9455e10f3102d56656a84549f11bd31f7"
 #   end
 
 #   stable do
 #     patch do
-#       url "https://raw.githubusercontent.com/willbchang/homebrew-emacsmacport/master/patches/mac-arm-fix.diff"
+#       url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/mac-arm-fix.diff"
 #       sha256 "9b58a61931e79863caa5c310a7ec290cc7b84c78aa0086d0ba7192756c370db8"
 #     end
 #   end
@@ -152,7 +153,7 @@ class EmacsDragon < Formula
       To link the application to default Homebrew App location:
         ln -s #{prefix}/Emacs.app /Applications
       Other ways please refer:
-        https://github.com/willbchang/homebrew-emacsmacport/wiki/Alternative-way-of-place-Emacs.app-to-Applications-directory
+        https://github.com/willbchang/homebrew-emacs-dragon/wiki/Alternative-way-of-place-Emacs.app-to-Applications-directory
 
       If you are using Doom Emacs, be sure to run doom sync:
         ~/.emacs.d/bin/doom sync

@@ -1,8 +1,8 @@
 # On Building...
 # Brew Emas Dragon
-- The primiary goal is to make **Emacs easier and beautifier** for macOS users.
-- This project based on [railwaycat/homebrew-emacsmacport](https://github.com/railwaycat/homebrew-emacsmacport) which uses [emacs-mac](https://bitbucket.org/mituharu/emacs-mac/overview).
-- Only newest stable version(currently 28.1) is supported.
+- The primiary goal is to make **Emacs easier and beautifier** for **macOS** users.
+- This project is based on [railwaycat/homebrew-emacsmacport](https://github.com/railwaycat/homebrew-emacsmacport) which uses [emacs-mac](https://bitbucket.org/mituharu/emacs-mac/overview).
+- Only newest stable version(currently **Emacs 28.1** and **macOS 12**) is supported.
 - I recommend using this build with [ward-emacs](https://github.com/willbchang/ward-emacs) config, then write your own.
 
 ## Features
