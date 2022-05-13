@@ -8,7 +8,7 @@ class EmacsDragon < Formula
 
   head "https://bitbucket.org/mituharu/emacs-mac.git", branch: "work"
 
-  option "with-native-comp", "Build with native compilation (only with --HEAD, experimental, check issue \#274 before installation)"
+  option "with-native-comp", "Build with native compilation"
 
   resource "emacs-dragon-icon" do
     url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/icons/emacs-dragon-icon.icns"
@@ -140,7 +140,9 @@ class EmacsDragon < Formula
   end
 
   def caveats
+    # TODO: Check if there is a Emacs
     `osascript -e 'tell application "Finder" to make alias file to POSIX file "#{prefix}/Emacs.app" at POSIX file "/Applications"'`
+
     <<~EOS
       This is YAMAMOTO Mitsuharu's "Mac port" addition to
       GNU Emacs 27. This provides a native GUI support for Mac OS X
@@ -150,18 +152,6 @@ class EmacsDragon < Formula
       Emacs.app was installed to:
         #{prefix}
 
-      To link the application to default Homebrew App location:
-        ln -s #{prefix}/Emacs.app /Applications
-      Other ways please refer:
-        https://github.com/willbchang/homebrew-emacs-dragon/wiki/Alternative-way-of-place-Emacs.app-to-Applications-directory
-
-      If you are using Doom Emacs, be sure to run doom sync:
-        ~/.emacs.d/bin/doom sync
-
-      For an Emacs.app CLI starter, see:
-        https://gist.github.com/4043945
-
-      Emacs mac port also available on MacPorts with name "emacs-mac-app" and "emacs-mac-app-devel", but they are not maintained by the maintainer of this formula.
     EOS
   end
 
