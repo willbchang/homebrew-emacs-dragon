@@ -86,10 +86,9 @@ class EmacsDragon < Formula
       "--with-mac",
       "--enable-mac-app=#{prefix}",
       "--with-gnutls",
+      "--with-modules",
+      "--with-rsvg",
     ]
-    args << "--with-modules" unless build.without? "modules"
-    args << "--with-rsvg" if build.with? "rsvg"
-    args << "--with-mac-metal" if build.with? "mac-metal"
     args << "--with-native-compilation" if build.with? "native-comp"
 
     if build.with? "native-comp"
