@@ -1,0 +1,13 @@
+diff --git a/lisp/international/fontset.el b/lisp/international/fontset.el
+index 31ffaf1..ce8997c 100644
+--- a/lisp/international/fontset.el
++++ b/lisp/international/fontset.el
+@@ -928,7 +928,7 @@
+                       nil 'prepend))
+   ;; This sets up the Emoji codepoints to use prettier fonts.
+   (set-fontset-font "fontset-default" 'emoji
+-                    '("Noto Color Emoji" . "iso10646-1") nil 'prepend)
++                    '("Apple Color Emoji" . "iso10646-1") nil 'prepend)
+ 
+   ;; Append CJK fonts for characters other than han, kana, cjk-misc.
+   ;; Append fonts for scripts whose name is also a charset name.

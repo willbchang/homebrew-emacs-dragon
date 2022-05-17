@@ -29,8 +29,12 @@ class EmacsDragon < Formula
   depends_on "fd"
   depends_on "cmake"
   depends_on "libvterm"
+
   # depends_on cask: "font-roboto-mono"
-  # system_profiler SPFontsDataType | grep 'RobotoMono.*\.ttf'
+  if `system_profiler SPFontsDataType | grep 'RobotoMono.*\.ttf'`.empty?
+    `/usr/local/bin/brew tap homebrew/cask-fonts`
+    `/usr/local/bin/brew --cask install font-roboto-mono`
+  end
 
   patch do
     url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/emacs-mac-title-bar-9.0.patch"
@@ -56,6 +60,13 @@ class EmacsDragon < Formula
     url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/mac-native-keybindings.patch"
     sha256 "0f51c32d7ec084133287b653eceb2113845d2d87ecb65bc3e3cddf34b1df5416"
   end
+
+  # Mac Font
+  patch do
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/mac-font.patch"
+    sha256 "16b19a3fd2814cebe2b666747dd53ea70a90d66de7e52aee01be64defc2eb534"
+  end
+
 
   # Better Default UI
 #   patch do
