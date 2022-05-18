@@ -1,11 +1,12 @@
 diff --git a/lisp/term/mac-win.el b/lisp/term/mac-win.el
-index 20b03f33a4..f90d3360d9 100644
+index 20b03f33a4..cc24d3abd0 100644
 --- a/lisp/term/mac-win.el
 +++ b/lisp/term/mac-win.el
-@@ -3219,6 +3219,43 @@ system symbol names."
+@@ -3219,6 +3219,51 @@ system symbol names."
  	     (and value (cdr value))))
  	 mac-system-symbol-cache))))
  
++;; Frame
 +;; Resizing the Emacs frame can be a terribly expensive part of changing the
 +;; font. By inhibiting this, we easily halve startup times with fonts that are
 +;; larger than the system default.
@@ -19,19 +20,24 @@ index 20b03f33a4..f90d3360d9 100644
 +                            (right-fringe   . 1)
 +                            (vertical-scroll-bars . nil)))
 +
++
 +;; Title Bar
 +;; Show icon and abbreviated full path for file and directory in title bar.
 +(setq frame-title-format
 +      '(buffer-file-name (:eval (abbreviate-file-name buffer-file-name))
 +         (dired-directory dired-directory "%b")))
 +
++
 +;; Cursor
 +;; Set default cursor type to bar.
 +(setq-default cursor-type 'bar)
-+
++;; Disable cursor blink.
++(blink-cursor-mode 0)
 +;; Disable cursor in inactive window.
 +(setq-default cursor-in-non-selected-windows nil)
 +
++
++;; Fringer
 +;; Disable ugly fringe bitmaps.
 +(setf (cdr (assq 'continuation fringe-indicator-alist))
 +      '(nil nil) ;; no continuation indicators
@@ -40,6 +46,8 @@ index 20b03f33a4..f90d3360d9 100644
 +      ;; '(left-curly-arrow right-curly-arrow) ;; default
 +      )
 +
++
++;; Modeline
 +;; Use a single line as modeline.
 +(setq-default mode-line-format '(""))
 +

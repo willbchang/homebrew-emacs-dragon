@@ -71,7 +71,7 @@ class EmacsDragon < Formula
   # Better Default UI
   patch do
     url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/better-default-UI.patch"
-    sha256 "093b3e9f3a0af65481c53539e28044b6f021c70741aaf38cd4cd653e0f53d82b"
+    sha256 "8eca17bd4404672ee341932b6158ef8132783534c6a419cabeccca92dbb4d373"
   end
 
 #   stable do
