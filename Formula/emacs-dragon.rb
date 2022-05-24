@@ -58,7 +58,7 @@ class EmacsDragon < Formula
   # Mac Native keybindings
   patch do
     url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/mac-native-keybindings.patch"
-    sha256 "0f51c32d7ec084133287b653eceb2113845d2d87ecb65bc3e3cddf34b1df5416"
+    sha256 "ba29b0a8801b62931df75c5b83f3f274c9419427b2c8ad5d9e0958cad2d31ca9"
   end
 
   # Mac Font

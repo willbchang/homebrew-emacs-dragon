@@ -1,5 +1,5 @@
 diff --git a/lisp/term/mac-win.el b/lisp/term/mac-win.el
-index 20b03f3..5e89cc4 100644
+index 20b03f3..0057386 100644
 --- a/lisp/term/mac-win.el
 +++ b/lisp/term/mac-win.el
 @@ -3219,6 +3219,164 @@ system symbol names."
@@ -14,7 +14,7 @@ index 20b03f3..5e89cc4 100644
 +
 +;; Frame
 +(global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
-+(global-set-key (kbd "S-n") 'new-empty-frame)
++(global-set-key (kbd "s-N") 'new-empty-frame)
 +(global-set-key (kbd "s-W") 'delete-frame)
 +(global-set-key (kbd "s-`") 'other-frame)
 +(global-set-key (kbd "M-`") 'other-window)
