@@ -11,3 +11,20 @@ index 31ffaf1..ce8997c 100644
  
    ;; Append CJK fonts for characters other than han, kana, cjk-misc.
    ;; Append fonts for scripts whose name is also a charset name.
+diff --git a/lisp/term/mac-win.el b/lisp/term/mac-win.el
+index 20b03f3..79a83d4 100644
+--- a/lisp/term/mac-win.el
++++ b/lisp/term/mac-win.el
+@@ -2926,8 +2926,10 @@ standard ones in `x-handle-args'."
+   ;; Create the default fontset.
+   (create-default-fontset)
+ 
+-  (set-fontset-font t '(#x20000 . #x2FFFF)
+-		    '("HanaMinB" . "unicode-sip") nil 'append)
++  ;; Set font for Chinese.
++  (dolist (charset '(kana han symbol cjk-misc bopomofo))
++    (set-fontset-font "fontset-default" charset
++                      '("PingFang SC" . "iso10646-1") nil 'prepend))
+ 
+   ;; Create fontset specified in X resources "Fontset-N" (N is 0, 1, ...).
+   (create-fontset-from-x-resource)

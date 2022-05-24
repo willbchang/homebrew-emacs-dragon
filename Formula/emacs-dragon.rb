@@ -64,7 +64,7 @@ class EmacsDragon < Formula
   # Mac Font
   patch do
     url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/mac-font.patch"
-    sha256 "356642613d90311061d22b4d0d961c16338129fd73d4147b8c10524c5b634362"
+    sha256 "cf48e1e9254b4d2e083123657a4a5e864a0f07b8eb82d638c47533ae735f625e"
   end
 
 
