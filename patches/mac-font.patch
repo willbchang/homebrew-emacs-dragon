@@ -1,26 +1,17 @@
-diff --git a/lisp/international/fontset.el b/lisp/international/fontset.el
-index 31ffaf1..ce8997c 100644
---- a/lisp/international/fontset.el
-+++ b/lisp/international/fontset.el
-@@ -928,7 +928,7 @@
-                       nil 'prepend))
-   ;; This sets up the Emoji codepoints to use prettier fonts.
-   (set-fontset-font "fontset-default" 'emoji
--                    '("Noto Color Emoji" . "iso10646-1") nil 'prepend)
-+                    '("Apple Color Emoji" . "iso10646-1") nil 'prepend)
- 
-   ;; Append CJK fonts for characters other than han, kana, cjk-misc.
-   ;; Append fonts for scripts whose name is also a charset name.
 diff --git a/lisp/term/mac-win.el b/lisp/term/mac-win.el
-index 20b03f3..79a83d4 100644
+index 20b03f3..58696a1 100644
 --- a/lisp/term/mac-win.el
 +++ b/lisp/term/mac-win.el
-@@ -2926,8 +2926,10 @@ standard ones in `x-handle-args'."
+@@ -2926,8 +2926,14 @@ standard ones in `x-handle-args'."
    ;; Create the default fontset.
    (create-default-fontset)
  
 -  (set-fontset-font t '(#x20000 . #x2FFFF)
 -		    '("HanaMinB" . "unicode-sip") nil 'append)
++  ;; This sets up the Emoji codepoints to use prettier fonts.
++  (set-fontset-font "fontset-default" 'emoji
++                    '("Apple Color Emoji" . "iso10646-1") nil 'prepend)
++
 +  ;; Set font for Chinese.
 +  (dolist (charset '(kana han symbol cjk-misc bopomofo))
 +    (set-fontset-font "fontset-default" charset
