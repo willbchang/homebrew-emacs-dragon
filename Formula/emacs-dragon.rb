@@ -74,6 +74,12 @@ class EmacsDragon < Formula
     sha256 "8eca17bd4404672ee341932b6158ef8132783534c6a419cabeccca92dbb4d373"
   end
 
+  # Better Default UX
+  patch do
+    url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/better-default-UX.patch"
+    sha256 "69b920922abe62125f91c5152386783cfd86d58dc3a8ca8802ae6fd832496c3a"
+  end
+
 #   stable do
 #     patch do
 #       url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/mac-arm-fix.diff"

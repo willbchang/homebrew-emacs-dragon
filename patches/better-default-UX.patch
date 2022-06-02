@@ -1,0 +1,149 @@
+diff --git a/lisp/autorevert.el b/lisp/autorevert.el
+index 97a122b7bc..940796bb94 100644
+--- a/lisp/autorevert.el
++++ b/lisp/autorevert.el
+@@ -508,6 +508,7 @@ suppressed by setting `auto-revert-verbose' to nil.
+ This function calls the hook `global-auto-revert-mode-hook'.
+ It displays the text that `global-auto-revert-mode-text'
+ specifies in the mode line."
++  :init-value t
+   :global t :group 'auto-revert :lighter global-auto-revert-mode-text
+   (auto-revert-set-timer)
+   (if global-auto-revert-mode
+diff --git a/lisp/cus-start.el b/lisp/cus-start.el
+index 62a4f634b5..92a1be4932 100644
+--- a/lisp/cus-start.el
++++ b/lisp/cus-start.el
+@@ -152,7 +152,7 @@ Leaving \"Default\" unchecked is equivalent with specifying a default of
+ 	     (scroll-down-aggressively windows
+ 				       (choice (const :tag "off" nil) float)
+ 				       "21.1")
+-	     (line-spacing display (choice (const :tag "none" nil) number)
++	     (line-spacing display (choice (const :tag "0.1" 0.1) float)
+ 			   "22.1")
+ 	     (cursor-in-non-selected-windows
+ 	      cursor ,cursor-type-types nil
+@@ -174,7 +174,7 @@ Leaving \"Default\" unchecked is equivalent with specifying a default of
+              (delete-auto-save-files auto-save boolean)
+              (kill-buffer-delete-auto-save-files auto-save boolean "28.1")
+ 	     ;; callint.c
+-	     (mark-even-if-inactive editing-basics boolean)
++	     (mark-even-if-inactive editing-basics nil)
+ 	     ;; callproc.c
+ 	     (shell-file-name execute file)
+ 	     (exec-path execute
+@@ -807,8 +807,8 @@ Leaving \"Default\" unchecked is equivalent with specifying a default of
+              ;; terminal.c
+              (ring-bell-function display
+               (choice
+-               (const :tag "Default" nil)
+-               (const :tag "Silent" ignore)
++               (const :tag "Default" ignore)
++               (const :tag "Ring" nil)
+                function))
+ 	     ;; undo.c
+ 	     (undo-limit undo integer "27.1")
+diff --git a/lisp/delsel.el b/lisp/delsel.el
+index f5fe7cf793..84b864e725 100644
+--- a/lisp/delsel.el
++++ b/lisp/delsel.el
+@@ -77,6 +77,7 @@ point regardless of any selection.
+ 
+ See `delete-selection-helper' and `delete-selection-pre-hook' for
+ information on adapting behavior of commands in Delete Selection mode."
++  :init-value t
+   :global t :group 'editing-basics
+   (if (not delete-selection-mode)
+       (remove-hook 'pre-command-hook 'delete-selection-pre-hook)
+diff --git a/lisp/elec-pair.el b/lisp/elec-pair.el
+index 964d21f11c..49cec21f7d 100644
+--- a/lisp/elec-pair.el
++++ b/lisp/elec-pair.el
+@@ -635,6 +635,7 @@ If the region is active, the parentheses (brackets, etc.) are
+ inserted around the region instead.
+ 
+ To toggle the mode in a single buffer, use `electric-pair-local-mode'."
++  :init-value t
+   :global t :group 'electricity
+   (if electric-pair-mode
+       (progn
+diff --git a/lisp/files.el b/lisp/files.el
+index 5fa38e46af..7df1ff6218 100644
+--- a/lisp/files.el
++++ b/lisp/files.el
+@@ -316,7 +316,7 @@ Includes the new backup.  Must be greater than 0."
+   :group 'backup)
+ (put 'kept-new-versions 'safe-local-variable 'integerp)
+ 
+-(defcustom require-final-newline nil
++(defcustom require-final-newline t
+   "Whether to add a newline automatically at the end of the file.
+ 
+ A value of t means do this only when the file is about to be saved.
+@@ -430,6 +430,7 @@ You can also set the buffer-local value of the variable
+ value of this variable is nil is ignored for the purpose of
+ `auto-save-visited-mode', even if `auto-save-visited-mode' is
+ enabled."
++  :init-value t
+   :group 'auto-save
+   :global t
+   (when auto-save--timer (cancel-timer auto-save--timer))
+@@ -675,7 +676,7 @@ using \\[read-only-mode]."
+ Maximum length of the history list is determined by the value
+ of `history-length', which see.")
+ 
+-(defvar save-silently nil
++(defvar save-silently t
+   "If non-nil, avoid messages when saving files.
+ Error-related messages will still be printed, but all other
+ messages will not.")
+diff --git a/lisp/net/goto-addr.el b/lisp/net/goto-addr.el
+index 99ed14ca8b..5aa4b0dc60 100644
+--- a/lisp/net/goto-addr.el
++++ b/lisp/net/goto-addr.el
+@@ -296,6 +296,7 @@ Also fontifies the buffer appropriately (see `goto-address-fontify-p' and
+ ;;;###autoload
+ (define-globalized-minor-mode global-goto-address-mode
+   goto-address-mode goto-addr-mode--turn-on
++  :init-value t
+   :version "28.1")
+ 
+ ;;;###autoload
+diff --git a/lisp/saveplace.el b/lisp/saveplace.el
+index c088facb3c..6a38ff71d1 100644
+--- a/lisp/saveplace.el
++++ b/lisp/saveplace.el
+@@ -151,6 +151,7 @@ disabled, i.e., the position is recorded for all files."
+   "Non-nil means automatically save place in each file.
+ This means when you visit a file, point goes to the last place
+ where it was when you previously visited the same file."
++  :init-value t
+   :global t
+   :group 'save-place
+   (save-place--setup-hooks save-place-mode))
+diff --git a/lisp/startup.el b/lisp/startup.el
+index 5a35b528bc..434f4385c5 100644
+--- a/lisp/startup.el
++++ b/lisp/startup.el
+@@ -331,7 +331,7 @@ response to any settings from your init file.  Unless this matters
+ to you, use `emacs-startup-hook' instead.  (The name of this hook
+ is due to historical reasons, and does not reflect its purpose very well.)")
+ 
+-(defcustom initial-major-mode 'lisp-interaction-mode
++(defcustom initial-major-mode 'org-mode
+   "Major mode command symbol to use for the initial `*scratch*' buffer."
+   :type 'function)
+ 
+diff --git a/lisp/window.el b/lisp/window.el
+index a47a1216d1..01174afd64 100644
+--- a/lisp/window.el
++++ b/lisp/window.el
+@@ -6947,7 +6947,7 @@ that frame."
+  "use a `reusable-frames' alist entry in `display-buffer-alist'."
+  "24.3")
+ 
+-(defcustom pop-up-windows t
++(defcustom pop-up-windows nil
+   "Non-nil means `display-buffer' should make a new window.
+ This variable is provided mainly for backward compatibility and
+ should not be used in new code.  To make `display-buffer' behave
