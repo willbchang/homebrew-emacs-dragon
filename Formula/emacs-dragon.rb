@@ -77,7 +77,7 @@ class EmacsDragon < Formula
   # Better Default UX
   patch do
     url "https://raw.githubusercontent.com/willbchang/homebrew-emacs-dragon/master/patches/better-default-UX.patch"
-    sha256 "69b920922abe62125f91c5152386783cfd86d58dc3a8ca8802ae6fd832496c3a"
+    sha256 "378dbbb960df469e33a6432049ee87c546d83864fc835faf6864fe1d50edc3fd"
   end
 
 #   stable do

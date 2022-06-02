@@ -121,19 +121,6 @@ index c088facb3c..6a38ff71d1 100644
    :global t
    :group 'save-place
    (save-place--setup-hooks save-place-mode))
-diff --git a/lisp/startup.el b/lisp/startup.el
-index 5a35b528bc..434f4385c5 100644
---- a/lisp/startup.el
-+++ b/lisp/startup.el
-@@ -331,7 +331,7 @@ response to any settings from your init file.  Unless this matters
- to you, use `emacs-startup-hook' instead.  (The name of this hook
- is due to historical reasons, and does not reflect its purpose very well.)")
- 
--(defcustom initial-major-mode 'lisp-interaction-mode
-+(defcustom initial-major-mode 'org-mode
-   "Major mode command symbol to use for the initial `*scratch*' buffer."
-   :type 'function)
- 
 diff --git a/lisp/window.el b/lisp/window.el
 index a47a1216d1..01174afd64 100644
 --- a/lisp/window.el
