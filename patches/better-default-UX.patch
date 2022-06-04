@@ -11,7 +11,7 @@ index 97a122b7bc..940796bb94 100644
    (auto-revert-set-timer)
    (if global-auto-revert-mode
 diff --git a/lisp/cus-start.el b/lisp/cus-start.el
-index 62a4f634b5..92a1be4932 100644
+index 62a4f634b5..85d2ae7e2f 100644
 --- a/lisp/cus-start.el
 +++ b/lisp/cus-start.el
 @@ -152,7 +152,7 @@ Leaving \"Default\" unchecked is equivalent with specifying a default of
@@ -23,26 +23,6 @@ index 62a4f634b5..92a1be4932 100644
  			   "22.1")
  	     (cursor-in-non-selected-windows
  	      cursor ,cursor-type-types nil
-@@ -174,7 +174,7 @@ Leaving \"Default\" unchecked is equivalent with specifying a default of
-              (delete-auto-save-files auto-save boolean)
-              (kill-buffer-delete-auto-save-files auto-save boolean "28.1")
- 	     ;; callint.c
--	     (mark-even-if-inactive editing-basics boolean)
-+	     (mark-even-if-inactive editing-basics nil)
- 	     ;; callproc.c
- 	     (shell-file-name execute file)
- 	     (exec-path execute
-@@ -807,8 +807,8 @@ Leaving \"Default\" unchecked is equivalent with specifying a default of
-              ;; terminal.c
-              (ring-bell-function display
-               (choice
--               (const :tag "Default" nil)
--               (const :tag "Silent" ignore)
-+               (const :tag "Default" ignore)
-+               (const :tag "Ring" nil)
-                function))
- 	     ;; undo.c
- 	     (undo-limit undo integer "27.1")
 diff --git a/lisp/delsel.el b/lisp/delsel.el
 index f5fe7cf793..84b864e725 100644
 --- a/lisp/delsel.el
@@ -68,9 +48,18 @@ index 964d21f11c..49cec21f7d 100644
    (if electric-pair-mode
        (progn
 diff --git a/lisp/files.el b/lisp/files.el
-index 5fa38e46af..7df1ff6218 100644
+index 5fa38e46af..bd67536d53 100644
 --- a/lisp/files.el
 +++ b/lisp/files.el
+@@ -68,7 +68,7 @@ a regexp matching the name it is linked to."
+   :group 'abbrev
+   :group 'find-file)
+ 
+-(defcustom make-backup-files t
++(defcustom make-backup-files nil
+   "Non-nil means make a backup of a file the first time it is saved.
+ This can be done by renaming the file or by copying.
+ 
 @@ -316,7 +316,7 @@ Includes the new backup.  Must be greater than 0."
    :group 'backup)
  (put 'kept-new-versions 'safe-local-variable 'integerp)
@@ -134,3 +123,42 @@ index a47a1216d1..01174afd64 100644
    "Non-nil means `display-buffer' should make a new window.
  This variable is provided mainly for backward compatibility and
  should not be used in new code.  To make `display-buffer' behave
+diff --git a/src/callint.c b/src/callint.c
+index ce77c893f4..d14a3ea222 100644
+--- a/src/callint.c
++++ b/src/callint.c
+@@ -896,7 +896,7 @@ This option makes a difference in Transient Mark mode.
+ When the option is non-nil, deactivation of the mark
+ turns off region highlighting, but commands that use the mark
+ behave as if the mark were still active.  */);
+-  Vmark_even_if_inactive = Qt;
++  Vmark_even_if_inactive = Qnil;
+ 
+   DEFVAR_LISP ("mouse-leave-buffer-hook", Vmouse_leave_buffer_hook,
+ 	       doc: /* Hook run when the user mouse-clicks in a window.
+diff --git a/src/fns.c b/src/fns.c
+index e1b3cd4321..6b81c700cc 100644
+--- a/src/fns.c
++++ b/src/fns.c
+@@ -6048,7 +6048,7 @@ We recommend against setting this variable non-nil, because `yes-or-no-p'
+ is intended to be used when users are expected not to respond too
+ quickly, but to take their time and perhaps think about the answer.
+ The same variable also affects the function `read-answer'.  */);
+-  use_short_answers = false;
++  use_short_answers = true;
+ 
+   defsubr (&Sidentity);
+   defsubr (&Srandom);
+diff --git a/src/terminal.c b/src/terminal.c
+index 52c41d4992..5f94eb6efc 100644
+--- a/src/terminal.c
++++ b/src/terminal.c
+@@ -650,7 +650,7 @@ syms_of_terminal (void)
+   DEFVAR_LISP ("ring-bell-function", Vring_bell_function,
+     doc: /* Non-nil means call this function to ring the bell.
+ The function should accept no arguments.  */);
+-  Vring_bell_function = Qnil;
++  Vring_bell_function = Qignored;
+ 
+   DEFVAR_LISP ("delete-terminal-functions", Vdelete_terminal_functions,
+     doc: /* Special hook run when a terminal is deleted.
